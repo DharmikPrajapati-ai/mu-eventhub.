@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Dashboard')}"></head>
+<body>
+<header th:replace="~{fragments :: nav}"></header>
+
+<main class="wrap page">
+    <div class="section-head">
+        <div>
+            <h1 th:text="${college.name}">College</h1>
+            <p class="muted">Signed in as <span th:text="${rep.fullName}">Name</span></p>
+        </div>
+        <div class="cta-actions">
+            <a class="btn btn-ghost" th:href="@{/rep/college}">Edit college profile</a>
+            <a class="btn" th:href="@{/rep/events/new}">+ Add event</a>
+        </div>
+    </div>
+
+    <p class="alert ok" th:if="${msg}" th:text="${msg}"></p>
+
+    <p class="empty" th:if="${#lists.isEmpty(events)}">You haven't published any events yet.</p>
+
+    <table class="table" th:if="${!#lists.isEmpty(events)}">
+        <thead>
+            <tr><th>Event</th><th>Dates</th><th>Registration link</th><th></th></tr>
+        </thead>
+        <tbody>
+            <tr th:each="e : ${events}">
+                <td>
+                    <a th:href="@{/events/{id}(id=${e.id})}" th:text="${e.title}">Title</a><br>
+                    <span class="badge small" th:classappend="'t-' + ${e.type.css}" th:text="${e.type.label}">Type</span>
+                    <span class="pill pill-past" th:if="${e.past}">Ended</span>
+                </td>
+                <td th:text="${e.dateRange}">dates</td>
+                <td>
+                    <a th:if="${e.hasLink}" th:href="${e.registrationUrl}" target="_blank" rel="noopener noreferrer">Open link</a>
+                    <span th:unless="${e.hasLink}" class="muted">— none —</span>
+                </td>
+                <td class="row-actions">
+                    <a class="btn btn-ghost btn-sm" th:href="@{/rep/events/{id}/edit(id=${e.id})}">Edit</a>
+                    <form th:action="@{/rep/events/{id}/delete(id=${e.id})}" method="post" class="inline"
+                          onsubmit="return confirm('Delete this event permanently?');">
+                        <button class="btn btn-danger btn-sm" type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</main>
+
+<footer th:replace="~{fragments :: footer}"></footer>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('College login')}"></head>
+<body>
+<header th:replace="~{fragments :: nav}"></header>
+
+<main class="wrap page narrow">
+    <h1>College representative login</h1>
+    <p class="alert ok" th:if="${param.registered}">Account created. Please log in.</p>
+    <p class="alert err" th:if="${param.error}">Wrong username or password.</p>
+
+    <form class="form" th:action="@{/login}" method="post">
+        <label>Username <input type="text" name="username" required autofocus autocomplete="username"></label>
+        <label>Password <input type="password" name="password" required autocomplete="current-password"></label>
+        <button class="btn btn-block" type="submit">Log in</button>
+    </form>
+
+    <p class="muted">New here? <a class="link" th:href="@{/signup}">Create a representative account</a></p>
+
+    <div class="demo-box">
+        <strong>Demo accounts</strong> (password <code>password123</code>):
+        <code>spit_rep</code>, <code>tsec_rep</code>, <code>frcrce_rep</code>, <code>tcet_rep</code>,
+        <code>xaviers_rep</code>, <code>mithibai_rep</code>
+    </div>
+</main>
+
+<footer th:replace="~{fragments :: footer}"></footer>
+</body>
+</html>

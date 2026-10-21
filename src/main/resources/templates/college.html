@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head(${college.name})}"></head>
+<body>
+<header th:replace="~{fragments :: nav}"></header>
+
+<main class="wrap page">
+    <p><a class="link" th:href="@{/colleges}">&larr; All colleges</a></p>
+    <h1 th:text="${college.name}">College</h1>
+    <p class="muted" th:if="${college.area}" th:text="${college.area}">Area</p>
+    <p class="prose" th:if="${college.about}" th:text="${college.about}">About</p>
+    <p th:if="${college.website}">
+        <a class="link" th:href="${college.website}" target="_blank" rel="noopener noreferrer">College website &nearr;</a>
+    </p>
+
+    <h2>Upcoming events</h2>
+    <p class="empty" th:if="${#lists.isEmpty(upcomingEvents)}">No upcoming events listed.</p>
+    <div class="grid">
+        <th:block th:each="e : ${upcomingEvents}">
+            <article th:replace="~{fragments :: card(${e})}"></article>
+        </th:block>
+    </div>
+
+    <th:block th:if="${!#lists.isEmpty(pastEvents)}">
+        <h2>Past events</h2>
+        <div class="grid">
+            <th:block th:each="e : ${pastEvents}">
+                <article th:replace="~{fragments :: card(${e})}"></article>
+            </th:block>
+        </div>
+    </th:block>
+</main>
+
+<footer th:replace="~{fragments :: footer}"></footer>
+</body>
+</html>

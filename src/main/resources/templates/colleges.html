@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Colleges')}"></head>
+<body>
+<header th:replace="~{fragments :: nav}"></header>
+
+<main class="wrap page">
+    <h1>Colleges</h1>
+    <div class="grid">
+        <a class="card college-card" th:each="c : ${colleges}" th:href="@{/colleges/{id}(id=${c.id})}">
+            <h3 th:text="${c.name}">Name</h3>
+            <p class="muted" th:text="${c.area}">Area</p>
+            <p><strong th:text="${upcoming[c.id]}">0</strong> upcoming event(s)</p>
+        </a>
+    </div>
+</main>
+
+<footer th:replace="~{fragments :: footer}"></footer>
+</body>
+</html>

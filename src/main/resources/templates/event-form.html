@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head(${heading})}"></head>
+<body>
+<header th:replace="~{fragments :: nav}"></header>
+
+<main class="wrap page narrow">
+    <p><a class="link" th:href="@{/rep/dashboard}">&larr; Back to dashboard</a></p>
+    <h1 th:text="${heading}">Add an event</h1>
+    <p class="muted">Publishing as <strong th:text="${college.name}">College</strong></p>
+
+    <form class="form" th:action="@{${formAction}}" th:object="${event}" method="post">
+        <label>Event title
+            <input type="text" th:field="*{title}" maxlength="150" required>
+            <small class="err" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></small>
+        </label>
+
+        <label>Category
+            <select th:field="*{type}" required>
+                <option value="">Choose…</option>
+                <option th:each="t : ${types}" th:value="${t}" th:text="${t.label}"></option>
+            </select>
+            <small class="err" th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></small>
+        </label>
+
+        <label>Description
+            <textarea th:field="*{description}" rows="6" maxlength="3000" required
+                      placeholder="What is it, who can join, team size, tracks, schedule…"></textarea>
+            <small class="err" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></small>
+        </label>
+
+        <label>Venue
+            <input type="text" th:field="*{venue}" maxlength="200" required>
+            <small class="err" th:if="${#fields.hasErrors('venue')}" th:errors="*{venue}"></small>
+        </label>
+
+        <div class="row">
+            <label>Start date
+                <input type="date" th:field="*{startDate}" required>
+                <small class="err" th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}"></small>
+            </label>
+            <label>End date
+                <input type="date" th:field="*{endDate}" required>
+                <small class="err" th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}"></small>
+            </label>
+            <label>Registration deadline <span class="muted">(optional)</span>
+                <input type="date" th:field="*{registrationDeadline}">
+                <small class="err" th:if="${#fields.hasErrors('registrationDeadline')}" th:errors="*{registrationDeadline}"></small>
+            </label>
+        </div>
+
+        <label>Direct registration link
+            <input type="url" th:field="*{registrationUrl}" maxlength="500"
+                   placeholder="https://forms.gle/… or https://unstop.com/…">
+            <small class="hint">Students click “Register” and go straight to this page.</small>
+            <small class="err" th:if="${#fields.hasErrors('registrationUrl')}" th:errors="*{registrationUrl}"></small>
+        </label>
+
+        <div class="row">
+            <label>Fee <span class="muted">(optional)</span>
+                <input type="text" th:field="*{fee}" maxlength="60" placeholder="Free / ₹200 per team">
+            </label>
+            <label>Prize pool <span class="muted">(optional)</span>
+                <input type="text" th:field="*{prizePool}" maxlength="100" placeholder="₹50,000">
+            </label>
+        </div>
+
+        <label>Contact email <span class="muted">(optional)</span>
+            <input type="email" th:field="*{contactEmail}" maxlength="120">
+            <small class="err" th:if="${#fields.hasErrors('contactEmail')}" th:errors="*{contactEmail}"></small>
+        </label>
+
+        <button class="btn" type="submit">Save event</button>
+    </form>
+</main>
+
+<footer th:replace="~{fragments :: footer}"></footer>
+</body>
+</html>

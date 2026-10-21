@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('All events')}"></head>
+<body>
+<header th:replace="~{fragments :: nav}"></header>
+
+<main class="wrap page">
+    <h1>Events</h1>
+
+    <form class="filters" th:action="@{/events}" method="get">
+        <input type="search" name="q" th:value="${q}" placeholder="Search…" aria-label="Search">
+        <select name="type" aria-label="Category">
+            <option value="">All categories</option>
+            <option th:each="t : ${types}" th:value="${t}" th:text="${t.label}" th:selected="${t == selType}"></option>
+        </select>
+        <select name="college" aria-label="College">
+            <option value="">All colleges</option>
+            <option th:each="c : ${colleges}" th:value="${c.id}" th:text="${c.name}" th:selected="${c.id == selCollege}"></option>
+        </select>
+        <label class="check"><input type="checkbox" name="past" value="true" th:checked="${past}"> Include past</label>
+        <button class="btn" type="submit">Filter</button>
+    </form>
+
+    <p class="muted" th:text="${#lists.size(results)} + ' event(s) found'">0 events</p>
+    <p class="empty" th:if="${#lists.isEmpty(results)}">Nothing matches those filters.</p>
+
+    <div class="grid">
+        <th:block th:each="e : ${results}">
+            <article th:replace="~{fragments :: card(${e})}"></article>
+        </th:block>
+    </div>
+</main>
+
+<footer th:replace="~{fragments :: footer}"></footer>
+</body>
+</html>

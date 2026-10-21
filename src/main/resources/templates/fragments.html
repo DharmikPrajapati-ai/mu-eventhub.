@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${title} + ' · MU EventHub'">MU EventHub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<header th:fragment="nav" class="site-header">
+    <div class="wrap nav">
+        <a class="brand" th:href="@{/}"><span class="brand-mark">MU</span> EventHub</a>
+        <nav class="nav-links">
+            <a th:href="@{/events}">Events</a>
+            <a th:href="@{/colleges}">Colleges</a>
+            <span sec:authorize="isAuthenticated()" class="nav-auth">
+                <a th:href="@{/rep/dashboard}">Dashboard</a>
+                <form th:action="@{/logout}" method="post" class="inline">
+                    <button type="submit" class="btn btn-ghost btn-sm">Log out</button>
+                </form>
+            </span>
+            <span sec:authorize="!isAuthenticated()" class="nav-auth">
+                <a th:href="@{/login}" class="btn btn-sm">College login</a>
+            </span>
+        </nav>
+    </div>
+</header>
+
+<footer th:fragment="footer" class="site-footer">
+    <div class="wrap">
+        <p>MU EventHub &middot; a student project listing events from colleges affiliated to the University of Mumbai.</p>
+        <p class="muted">Unofficial, not run by the University of Mumbai. Demo events are placeholders &mdash; always confirm details with the organising college.</p>
+    </div>
+</footer>
+
+<article th:fragment="card(e)" class="card">
+    <div class="card-top">
+        <span class="badge" th:classappend="'t-' + ${e.type.css}" th:text="${e.type.label}">Hackathon</span>
+        <span class="pill pill-live" th:if="${e.ongoing}">Live now</span>
+        <span class="pill pill-past" th:if="${e.past}">Ended</span>
+    </div>
+    <h3><a th:href="@{/events/{id}(id=${e.id})}" th:text="${e.title}">Title</a></h3>
+    <p class="college"><a th:href="@{/colleges/{id}(id=${e.college.id})}" th:text="${e.college.name}">College</a></p>
+    <ul class="meta">
+        <li><span class="ico">📅</span> <span th:text="${e.dateRange}">date</span></li>
+        <li><span class="ico">📍</span> <span th:text="${e.venue}">venue</span></li>
+        <li th:if="${e.fee}"><span class="ico">🎟️</span> <span th:text="${e.fee}">fee</span></li>
+    </ul>
+    <div class="card-actions">
+        <a class="btn btn-sm" th:if="${e.registrationOpen}" th:href="${e.registrationUrl}"
+           target="_blank" rel="noopener noreferrer">Register &rarr;</a>
+        <a class="link" th:href="@{/events/{id}(id=${e.id})}">Details</a>
+    </div>
+</article>
+</body>
+</html>

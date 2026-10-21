@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head(${event.title})}"></head>
+<body>
+<header th:replace="~{fragments :: nav}"></header>
+
+<main class="wrap page detail">
+    <p><a class="link" th:href="@{/events}">&larr; All events</a></p>
+
+    <div class="detail-grid">
+        <article>
+            <span class="badge" th:classappend="'t-' + ${event.type.css}" th:text="${event.type.label}">Type</span>
+            <h1 th:text="${event.title}">Title</h1>
+            <p class="college big">
+                by <a th:href="@{/colleges/{id}(id=${event.college.id})}" th:text="${event.college.name}">College</a>
+            </p>
+            <div class="prose" th:text="${event.description}">Description</div>
+        </article>
+
+        <aside class="panel">
+            <dl class="facts">
+                <dt>When</dt><dd th:text="${event.dateRange}">date</dd>
+                <dt>Where</dt><dd><span th:text="${event.venue}">venue</span><span th:if="${event.college.area}" th:text="', ' + ${event.college.area}"></span></dd>
+                <dt th:if="${event.fee}">Fee</dt><dd th:if="${event.fee}" th:text="${event.fee}">fee</dd>
+                <dt th:if="${event.prizePool}">Prizes</dt><dd th:if="${event.prizePool}" th:text="${event.prizePool}">prize</dd>
+                <dt th:if="${event.deadlineText}">Register by</dt><dd th:if="${event.deadlineText}" th:text="${event.deadlineText}">deadline</dd>
+                <dt th:if="${event.contactEmail}">Contact</dt>
+                <dd th:if="${event.contactEmail}"><a th:href="'mailto:' + ${event.contactEmail}" th:text="${event.contactEmail}">mail</a></dd>
+            </dl>
+
+            <a class="btn btn-block" th:if="${event.registrationOpen}" th:href="${event.registrationUrl}"
+               target="_blank" rel="noopener noreferrer">Register now &rarr;</a>
+            <p class="note" th:if="${event.registrationOpen}">Opens the organiser's registration page in a new tab.</p>
+            <p class="note warn" th:if="${event.past}">This event has ended.</p>
+            <p class="note warn" th:if="${!event.past and event.hasLink and !event.registrationOpen}">Registration has closed.</p>
+            <p class="note" th:if="${!event.past and !event.hasLink}">The organisers haven't added a registration link yet.</p>
+        </aside>
+    </div>
+</main>
+
+<footer th:replace="~{fragments :: footer}"></footer>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Create account')}"></head>
+<body>
+<header th:replace="~{fragments :: nav}"></header>
+
+<main class="wrap page narrow">
+    <h1>Create a representative account</h1>
+    <p class="muted">You need the invite code shared with your college's event committee.</p>
+
+    <form class="form" th:action="@{/signup}" th:object="${form}" method="post">
+        <label>Your name
+            <input type="text" th:field="*{fullName}" required>
+            <small class="err" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"></small>
+        </label>
+        <label>Username
+            <input type="text" th:field="*{username}" required autocomplete="username">
+            <small class="err" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></small>
+        </label>
+        <label>Password (min. 8 characters)
+            <input type="password" th:field="*{password}" required autocomplete="new-password">
+            <small class="err" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></small>
+        </label>
+        <label>College name
+            <input type="text" th:field="*{collegeName}" list="college-list" required
+                   placeholder="Pick an existing college or type a new one">
+            <datalist id="college-list">
+                <option th:each="c : ${colleges}" th:value="${c.name}"></option>
+            </datalist>
+            <small class="err" th:if="${#fields.hasErrors('collegeName')}" th:errors="*{collegeName}"></small>
+        </label>
+        <label>Area (only if adding a new college)
+            <input type="text" th:field="*{area}" placeholder="e.g. Andheri West">
+        </label>
+        <label>Invite code
+            <input type="text" th:field="*{inviteCode}" required>
+            <small class="err" th:if="${#fields.hasErrors('inviteCode')}" th:errors="*{inviteCode}"></small>
+        </label>
+        <button class="btn btn-block" type="submit">Create account</button>
+    </form>
+    <p class="muted">Demo invite code: <code>MU2026</code> (change it in <code>application.properties</code>).</p>
+</main>
+
+<footer th:replace="~{fragments :: footer}"></footer>
+</body>
+</html>

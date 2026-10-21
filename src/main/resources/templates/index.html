@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Hackathons, fests and events')}"></head>
+<body>
+<header th:replace="~{fragments :: nav}"></header>
+
+<section class="hero">
+    <div class="wrap">
+        <p class="eyebrow">Mumbai University colleges</p>
+        <h1>Every hackathon, tech fest &amp; cultural fest — in one place.</h1>
+        <p class="lead">Browse what's coming up across the colleges of Mumbai, and register straight from the organisers' own link.</p>
+        <form class="search" th:action="@{/events}" method="get">
+            <input type="search" name="q" placeholder="Search events or colleges, e.g. “hackathon” or “SPIT”" aria-label="Search events">
+            <button class="btn" type="submit">Search</button>
+        </form>
+        <div class="chips">
+            <a th:each="t : ${types}" th:href="@{/events(type=${t})}" class="chip" th:text="${t.label}">Type</a>
+        </div>
+        <dl class="stats">
+            <div><dt th:text="${upcomingCount}">0</dt><dd>upcoming events</dd></div>
+            <div><dt th:text="${hackathonCount}">0</dt><dd>hackathons</dd></div>
+            <div><dt th:text="${collegeCount}">0</dt><dd>colleges</dd></div>
+        </dl>
+    </div>
+</section>
+
+<main class="wrap">
+    <div class="section-head">
+        <h2>Happening soon</h2>
+        <a class="link" th:href="@{/events}">See all events &rarr;</a>
+    </div>
+    <p class="empty" th:if="${#lists.isEmpty(featured)}">No upcoming events yet. Check back soon!</p>
+    <div class="grid">
+        <th:block th:each="e : ${featured}">
+            <article th:replace="~{fragments :: card(${e})}"></article>
+        </th:block>
+    </div>
+
+    <section class="cta">
+        <div>
+            <h2>Organising an event at your college?</h2>
+            <p>Representatives get a login to publish events, edit details and add a direct registration link.</p>
+        </div>
+        <div class="cta-actions">
+            <a class="btn" th:href="@{/login}">Representative login</a>
+            <a class="btn btn-ghost" th:href="@{/signup}">Create account</a>
+        </div>
+    </section>
+</main>
+
+<footer th:replace="~{fragments :: footer}"></footer>
+</body>
+</html>

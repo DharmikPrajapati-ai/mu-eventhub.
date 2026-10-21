@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('College profile')}"></head>
+<body>
+<header th:replace="~{fragments :: nav}"></header>
+
+<main class="wrap page narrow">
+    <p><a class="link" th:href="@{/rep/dashboard}">&larr; Back to dashboard</a></p>
+    <h1>College profile</h1>
+    <p class="muted" th:text="${college.name}">College</p>
+
+    <form class="form" th:action="@{/rep/college}" th:object="${college}" method="post">
+        <label>Area
+            <input type="text" th:field="*{area}" maxlength="100">
+        </label>
+        <label>About
+            <textarea th:field="*{about}" rows="5" maxlength="1000"></textarea>
+        </label>
+        <label>College website
+            <input type="url" th:field="*{website}" maxlength="300" placeholder="https://…">
+            <small class="err" th:if="${#fields.hasErrors('website')}" th:errors="*{website}"></small>
+        </label>
+        <button class="btn" type="submit">Save</button>
+    </form>
+</main>
+
+<footer th:replace="~{fragments :: footer}"></footer>
+</body>
+</html>
